@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import html2canvas from 'html2canvas'
 import jspdf from 'jspdf'
+import { useState } from 'react';
 // import logo from 'assets/LogoDark.svg'
 
 function GerarPDF() {
@@ -20,7 +21,9 @@ function GerarPDF() {
   });
 }
 
+
 const Home: NextPage = () => {
+
 
   return (
     <><Head>
