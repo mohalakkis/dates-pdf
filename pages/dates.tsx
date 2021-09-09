@@ -1,33 +1,41 @@
-import { Component } from "react";
-import "react-dates/initialize";
-import "react-dates/lib/css/_datepicker.css";
-import { DateRangePicker } from "react-dates";
+import 'react-dates/initialize'
 
-class DateRangeInput extends Component {
-  state = {
-    startDate: null,
-    endDate: null,
-    focusedInput: null
-  };
+import { useState } from 'react'
+import { Moment } from 'moment'
+import { DayPickerSingleDateController } from 'react-dates'
 
-  render() {
-    return (
-      <DateRangePicker
-        transitionDuration={0}
-        startDateId="startDate"
-        endDateId="endDate"
-        startDate={this.state.startDate}
-        endDate={this.state.endDate}
-        onDatesChange={({ startDate, endDate }) => {
-          this.setState({ startDate, endDate });
-        }}
-        focusedInput={this.state.focusedInput}
-        onFocusChange={focusedInput => {
-          this.setState({ focusedInput });
-        }}
-      />
-    );
-  }
+type TypeCalendar = {
+  initialDate?: Moment
+  callback: (date: string) => void
+  isDayBlocked?: (day: Moment) => void
 }
 
-export default DateRangeInput;
+const Calendar = ({
+  initialDate,
+  callback,
+  isDayBlocked
+}: TypeCalendar): JSX.Element => {
+  const [date, setDate] = useState<Moment | null>(initialDate || null)
+
+  const Navigation = () => <img src="/images/icoCalendarNavigation.svg" />
+
+  const handleDate = day => {
+    setDate(day)
+    callback(day)
+  }
+
+  return (
+    <DayPickerSingleDateController
+      date={date}
+      focused
+      navPrev={<Navigation />}
+      navNext={<Navigation />}
+      hideKeyboardShortcutsPanel={true}
+      transitionDuration={0}
+      onDateChange={day => handleDate(day)}
+      isDayBlocked={isDayBlocked}
+    />
+  )
+}
+
+export default Calendar
